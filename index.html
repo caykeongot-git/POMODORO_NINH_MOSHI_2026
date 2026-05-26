@@ -253,6 +253,7 @@
         filter: blur(60px);
         opacity: 0.3;
         animation: floatOrb 20s ease-in-out infinite;
+        will-change: transform, filter;
       }
       .male-theme .orb:nth-child(1) {
         width: 300px;
@@ -322,6 +323,7 @@
         position: absolute;
         border-radius: 50%;
         animation: float 15s infinite ease-in-out;
+        will-change: transform, opacity;
       }
       .male-theme .particle {
         background: radial-gradient(
@@ -1430,6 +1432,218 @@
           width: 100%;
         }
       }
+      
+      /* PC Spatial Dashboard Layout */
+      @media (min-width: 1024px) {
+        .container {
+          max-width: 1400px;
+          width: 95vw;
+          min-height: 80vh;
+          display: grid;
+          grid-template-columns: 1fr 1.2fr 1fr;
+          grid-template-areas: 
+            "header timer stats"
+            "mode timer stats"
+            "presets timer caption"
+            "custom timer caption"
+            "controls controls export";
+          gap: 20px 40px;
+          align-items: center;
+          padding: 60px 50px;
+          background: rgba(255, 255, 255, 0.02);
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(50px) saturate(200%);
+          box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        .female-theme .container {
+          background: rgba(255, 255, 255, 0.4);
+          border: 1px solid rgba(255, 182, 193, 0.4);
+        }
+        .header { grid-area: header; margin-bottom: 0; text-align: left; }
+        .mode-indicator { grid-area: mode; text-align: left; }
+        .stats { grid-area: stats; margin: 10px 0; flex-direction: column; gap: 20px; align-items: stretch; }
+        .timer-display { grid-area: timer; margin: 0; display: flex; justify-content: center; align-items: center; }
+        .timer-circle { width: 420px; height: 420px; }
+        .time { font-size: 80px; }
+        .caption { grid-area: caption; margin: 15px 0; text-align: right; justify-content: flex-end; }
+        .presets { grid-area: presets; margin: 10px 0; justify-content: flex-start; }
+        .custom-input { grid-area: custom; margin: 10px 0; justify-content: flex-start; }
+        .controls { grid-area: controls; margin-top: 10px; justify-content: center; }
+        .export-btn { grid-area: export; margin-top: 10px; width: 100%; }
+        
+        .stat-item {
+          padding: 20px 25px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 15px;
+        }
+        .stat-value {
+          font-size: 24px;
+        }
+      }
+
+      /* Fullscreen Cinematic Focus Mode */
+      body.fullscreen-active {
+        overflow: hidden;
+      }
+      body.fullscreen-active .container {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        max-width: none !important;
+        border-radius: 0 !important;
+        border: none !important;
+        margin: 0 !important;
+        z-index: 999999 !important;
+        background: transparent !important;
+        backdrop-filter: none !important;
+        box-shadow: none !important;
+      }
+      body.fullscreen-active .timer-circle {
+        transform: scale(1.4);
+        filter: drop-shadow(0 0 40px rgba(233, 69, 96, 0.4));
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      body.fullscreen-active.female-theme .timer-circle {
+        filter: drop-shadow(0 0 40px rgba(255, 107, 157, 0.4));
+      }
+      
+      body.fullscreen-active .header,
+      body.fullscreen-active .mode-indicator,
+      body.fullscreen-active .stats,
+      body.fullscreen-active .presets,
+      body.fullscreen-active .custom-input,
+      body.fullscreen-active .export-btn,
+      body.fullscreen-active .caption,
+      body.fullscreen-active .controls {
+        opacity: 0.1 !important; 
+        filter: blur(2px);
+        transition: all 0.5s ease !important;
+      }
+      
+      body.fullscreen-active .header:hover,
+      body.fullscreen-active .mode-indicator:hover,
+      body.fullscreen-active .stats:hover,
+      body.fullscreen-active .presets:hover,
+      body.fullscreen-active .custom-input:hover,
+      body.fullscreen-active .export-btn:hover,
+      body.fullscreen-active .caption:hover,
+      body.fullscreen-active .controls:hover {
+        opacity: 1 !important;
+        filter: blur(0);
+      }
+      
+      /* Late Night Grind Mode - Cyberpunk/Deep Purple instead of black */
+      body.late-night-mode {
+        background-color: #030008 !important;
+      }
+      body.late-night-mode .container {
+        box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        background: rgba(10, 5, 20, 0.8) !important;
+        border: 1px solid rgba(138, 43, 226, 0.2);
+        backdrop-filter: blur(60px);
+      }
+      body.late-night-mode .orb {
+        opacity: 0.25 !important;
+        filter: hue-rotate(240deg) saturate(150%) brightness(0.8) blur(60px) !important;
+      }
+      body.late-night-mode .particle {
+        opacity: 0.4 !important;
+        box-shadow: 0 0 10px rgba(138, 43, 226, 0.8) !important;
+      }
+      /* V3.0 Psychology Additions */
+      @keyframes glitch {
+        0% { box-shadow: 0 0 0 rgba(255, 255, 255, 0); transform: scale(1); }
+        50% { box-shadow: 0 0 60px rgba(233, 69, 96, 0.8), inset 0 0 30px rgba(233, 69, 96, 0.5); transform: scale(1.02); border-color: rgba(233, 69, 96, 1); }
+        100% { box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1); transform: scale(1); }
+      }
+      .female-theme .container.ignition {
+        animation: glitchFemale 0.5s ease-out;
+      }
+      @keyframes glitchFemale {
+        0% { box-shadow: 0 0 0 rgba(255, 255, 255, 0); transform: scale(1); }
+        50% { box-shadow: 0 0 60px rgba(255, 107, 157, 0.8), inset 0 0 30px rgba(255, 107, 157, 0.5); transform: scale(1.02); border-color: rgba(255, 107, 157, 1); }
+        100% { box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1); transform: scale(1); }
+      }
+      .container.ignition {
+        animation: glitch 0.5s ease-out;
+      }
+      
+      /* Flow State & Loss Aversion */
+      body.timer-running .orb {
+        animation-duration: 5s !important;
+        filter: hue-rotate(45deg) saturate(200%) brightness(1.2) blur(50px) !important;
+        transition: all 1s ease;
+      }
+      body.timer-running .timer-circle::before {
+        animation-duration: 1s !important;
+        background: radial-gradient(circle, rgba(255, 0, 0, 0.3) 0%, transparent 70%);
+      }
+      body.timer-running .female-theme .timer-circle::before {
+        background: radial-gradient(circle, rgba(255, 46, 147, 0.3) 0%, transparent 70%);
+      }
+      body.timer-running #resetBtn {
+        opacity: 0.4;
+        border-color: rgba(255, 255, 255, 0.2);
+        color: rgba(255, 255, 255, 0.5);
+      }
+      body.timer-running .female-theme #resetBtn {
+        border-color: rgba(0, 0, 0, 0.2);
+        color: rgba(0, 0, 0, 0.5);
+      }
+      body.timer-running #resetBtn:hover {
+        opacity: 1;
+        color: inherit;
+        border-color: inherit;
+      }
+      /* V4.0 God Mode Additions */
+      @keyframes pulseAlert {
+        0% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.4); border-color: rgba(255, 0, 0, 0.5); transform: scale(1); }
+        50% { box-shadow: 0 0 80px rgba(255, 0, 0, 0.8), inset 0 0 40px rgba(255, 0, 0, 0.5); border-color: rgba(255, 0, 0, 1); transform: scale(1.02); }
+        100% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.4); border-color: rgba(255, 0, 0, 0.5); transform: scale(1); }
+      }
+      body.crunch-time .container {
+        animation: pulseAlert 0.8s infinite;
+      }
+      body.crunch-time .orb {
+        animation-duration: 2s !important;
+        filter: hue-rotate(0deg) saturate(300%) brightness(1.5) blur(40px) !important;
+      }
+      body.crunch-time .timer-circle {
+        filter: drop-shadow(0 0 50px rgba(255, 0, 0, 0.8));
+      }
+      body.crunch-time .timer-circle::before {
+        animation-duration: 0.4s !important;
+        background: radial-gradient(circle, rgba(255, 0, 0, 0.6) 0%, transparent 70%);
+      }
+      
+      @keyframes floatUp {
+        0% { opacity: 0; transform: translate(-50%, 0) scale(0.5); }
+        20% { opacity: 1; transform: translate(-50%, -20px) scale(1.2); }
+        80% { opacity: 1; transform: translate(-50%, -80px) scale(1); }
+        100% { opacity: 0; transform: translate(-50%, -100px) scale(0.8); }
+      }
+      .xp-float {
+        position: fixed;
+        top: 40%;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #00ff88;
+        font-family: 'Space Mono', monospace;
+        font-weight: 900;
+        font-size: 32px;
+        text-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
+        z-index: 9999999;
+        pointer-events: none;
+        animation: floatUp 2.5s ease-out forwards;
+      }
+      .female-theme .xp-float {
+        color: #ffb1c1;
+        text-shadow: 0 0 20px rgba(255, 177, 193, 0.8);
+      }
     </style>
   </head>
   <body>
@@ -1481,6 +1695,31 @@
       >
         🎨
       </button>
+
+      <!-- Lofi Mood Toggle -->
+      <button
+        class="theme-toggle"
+        id="lofiToggle"
+        onclick="toggleLofi()"
+        title="Toggle Lofi Mood"
+        style="bottom: 100px;"
+      >
+        🎧
+      </button>
+
+      <!-- Fullscreen Toggle -->
+      <button
+        class="theme-toggle"
+        id="fullscreenToggle"
+        onclick="toggleFullscreen()"
+        title="Focus Mode"
+        style="bottom: 160px; font-size: 20px;"
+      >
+        🔲
+      </button>
+      <audio id="lofiAudio" loop preload="none">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+      </audio>
 
       <!-- Main Container -->
       <div class="container">
@@ -1648,14 +1887,34 @@
       let notificationEnabled = true;
       let currentTheme = null;
 
-      // Session Stats
-      let sessionCount = 0;
-      let totalMinutes = 0;
-      let totalBreakMinutes = 0;
-      let streakCount = 0;
-      let maxStreak = 0;
-      let sessionHistory = [];
+      // Session Stats (Persisted with LocalStorage)
+      let sessionCount = parseInt(localStorage.getItem('pomodoro_sessionCount')) || 0;
+      let totalMinutes = parseInt(localStorage.getItem('pomodoro_totalMinutes')) || 0;
+      let totalBreakMinutes = parseInt(localStorage.getItem('pomodoro_totalBreakMinutes')) || 0;
+      let streakCount = parseInt(localStorage.getItem('pomodoro_streakCount')) || 0;
+      let maxStreak = parseInt(localStorage.getItem('pomodoro_maxStreak')) || 0;
+      let sessionHistory = JSON.parse(localStorage.getItem('pomodoro_history')) || [];
+      // Restore Date objects
+      sessionHistory.forEach(s => s.timestamp = new Date(s.timestamp));
       let sessionStartTime = new Date();
+
+      // User Personalization (XSS Safe)
+      let userName = localStorage.getItem('pomodoro_userName') || 'Grinder';
+      function saveNameToLocal(val) {
+        // Escape HTML to prevent DOM XSS
+        const escaped = val.replace(/[<>&"'`]/g, (char) => {
+          return {
+            '<': '&lt;',
+            '>': '&gt;',
+            '&': '&amp;',
+            '"': '&quot;',
+            "'": '&#39;',
+            '`': '&#96;'
+          }[char];
+        });
+        userName = escaped.trim() || 'Grinder';
+        localStorage.setItem('pomodoro_userName', userName);
+      }
 
       // DOM Elements
       const mainView = document.getElementById("main-view");
@@ -1845,14 +2104,32 @@
         }
       }
 
+      let resetClickCount = 0;
+      function showXP() {
+         const xp = document.createElement("div");
+         xp.className = "xp-float";
+         xp.textContent = "+25 FOCUS XP";
+         document.body.appendChild(xp);
+         setTimeout(() => xp.remove(), 2500);
+      }
+
       function startTimer() {
+        resetClickCount = 0;
+        document.getElementById("resetBtn").textContent = "Reset";
         if (isRunning) {
           clearInterval(timerInterval);
           isRunning = false;
+          document.body.classList.remove("timer-running");
+          document.body.classList.remove("crunch-time");
           startBtn.textContent = "Resume";
           dynamicIsland.classList.remove("active");
         } else {
           isRunning = true;
+          document.body.classList.add("timer-running");
+          const container = document.querySelector(".container");
+          container.classList.add("ignition");
+          setTimeout(() => container.classList.remove("ignition"), 500);
+          
           startBtn.textContent = "Pause";
           dynamicIsland.classList.add("active");
 
@@ -1860,9 +2137,18 @@
             remainingSeconds--;
             updateDisplay();
 
+            // Crunch Time (Adrenaline Rush)
+            if (remainingSeconds <= 60 && remainingSeconds > 0 && !isBreakMode) {
+               document.body.classList.add("crunch-time");
+            } else {
+               document.body.classList.remove("crunch-time");
+            }
+
             if (remainingSeconds <= 0) {
               clearInterval(timerInterval);
               isRunning = false;
+              document.body.classList.remove("timer-running");
+              document.body.classList.remove("crunch-time");
               startBtn.textContent = "Start";
               dynamicIsland.classList.remove("active");
 
@@ -1881,6 +2167,8 @@
                 });
 
                 updateStatsDisplay();
+                saveStatsToLocal();
+                showXP(); // V4.0 Micro-reward
                 showToast(
                   "success",
                   "🎉 Session completed!",
@@ -1901,8 +2189,19 @@
       }
 
       function resetTimer() {
+        if (isRunning && resetClickCount === 0) {
+           showToast("warning", "Dừng lại ư?", "Mọi nỗ lực sẽ đổ sông đổ biển! Bấm lần nữa để xác nhận bỏ cuộc.");
+           const rBtn = document.getElementById("resetBtn");
+           rBtn.textContent = "Sure?";
+           resetClickCount++;
+           setTimeout(() => { resetClickCount = 0; rBtn.textContent = "Reset"; }, 4000);
+           return;
+        }
+        resetClickCount = 0;
+        document.getElementById("resetBtn").textContent = "Reset";
         clearInterval(timerInterval);
         isRunning = false;
+        document.body.classList.remove("timer-running");
         remainingSeconds = totalSeconds;
         updateDisplay();
         startBtn.textContent = "Start";
@@ -2160,6 +2459,7 @@
                 <div>
                     <h1>FOCUS REPORT</h1>
                     <p>${dateStr} SESSION</p>
+                    <p style="color: #00ff88; font-size: 13px; margin-top: 5px; font-weight: 700; text-shadow: 0 0 10px rgba(0,255,136,0.4); border: 1px solid rgba(0,255,136,0.2); padding: 2px 8px; border-radius: 4px; display: inline-block;">RANK: S TIER - Vượt trội hơn 92% sinh viên hôm nay! 🏆</p>
                 </div>
                 <div class="icon">⏱️</div>
             </div>
@@ -2214,6 +2514,17 @@
             <div class="report-footer">
                 <div class="report-quote">"${randomQuote}"</div>
                 <div class="report-watermark">⚡ POWERED BY MOSHI ⚡</div>
+
+                <!-- Flex Name Customization (XSS Safe) -->
+                <div style="margin-top: 25px; display: flex; flex-direction: column; align-items: center; gap: 8px;" data-html2canvas-ignore>
+                    <label for="userNameInput" style="font-size: 11px; font-weight: 800; color: #a1a1aa; letter-spacing: 2px; text-transform: uppercase;">Flex Name</label>
+                    <input type="text" id="userNameInput" placeholder="Nhập tên..." maxlength="20" value="${userName !== 'Grinder' ? userName : ''}" style="padding: 10px 16px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255,255,255,0.05); color: white; text-align: center; font-size: 14px; font-weight: 600; outline: none; transition: all 0.3s; width: 200px;" oninput="saveNameToLocal(this.value)">
+                </div>
+
+                <div class="flex-actions" style="margin-top: 20px; display: flex; gap: 15px; justify-content: center;" data-html2canvas-ignore>
+                    <button class="preset-btn" style="border-color: #FF2E93; color: white;" onclick="exportFlex('16:9')">📸 Flex Post (16:9)</button>
+                    <button class="preset-btn" style="border-color: #FF8000; color: white;" onclick="exportFlex('9:16')">📱 Flex Story (9:16)</button>
+                </div>
             </div>
         `;
 
@@ -2242,6 +2553,556 @@
           triggerFireworks();
         }, 100);
       }
+
+      // ========== LOCAL STORAGE ==========
+      function saveStatsToLocal() {
+        localStorage.setItem('pomodoro_sessionCount', sessionCount);
+        localStorage.setItem('pomodoro_totalMinutes', totalMinutes);
+        localStorage.setItem('pomodoro_totalBreakMinutes', totalBreakMinutes);
+        localStorage.setItem('pomodoro_streakCount', streakCount);
+        localStorage.setItem('pomodoro_maxStreak', maxStreak);
+        localStorage.setItem('pomodoro_history', JSON.stringify(sessionHistory));
+      }
+
+      // ========== LOFI MOOD SYSTEM ==========
+      const moods = [
+        { name: "Off", icon: "🎧", src: "" },
+        { name: "Lofi Beats", icon: "🎵", src: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" },
+        { name: "Rain", icon: "🌧️", src: "https://cdn.pixabay.com/download/audio/2021/08/04/audio_0625c1539c.mp3?filename=heavy-rain-nature-sounds-8186.mp3" },
+        { name: "Campfire", icon: "🔥", src: "https://cdn.pixabay.com/download/audio/2021/08/09/audio_658e4e6f47.mp3?filename=campfire-crackling-nature-sounds-8155.mp3" },
+        { name: "Ocean Waves", icon: "🌊", src: "https://cdn.pixabay.com/download/audio/2022/03/10/audio_dbbb2951b1.mp3?filename=ocean-waves-111162.mp3" },
+        { name: "Mechanical Keyboard", icon: "⌨️", src: "https://cdn.pixabay.com/download/audio/2022/03/15/audio_731a5518b5.mp3?filename=typing-on-mechanical-keyboard-111452.mp3" }
+      ];
+      let currentMoodIndex = 0;
+
+      function toggleLofi() {
+        currentMoodIndex = (currentMoodIndex + 1) % moods.length;
+        const mood = moods[currentMoodIndex];
+        const audio = document.getElementById("lofiAudio");
+        const toggleBtn = document.getElementById("lofiToggle");
+        
+        if (currentMoodIndex === 0) {
+          audio.pause();
+          toggleBtn.style.opacity = "0.5";
+          toggleBtn.innerHTML = mood.icon;
+          showToast("info", "Mood off", "Silence...");
+        } else {
+          audio.src = mood.src;
+          audio.volume = 0.5;
+          audio.play().catch(e => console.log("Audio play failed:", e));
+          toggleBtn.style.opacity = "1";
+          toggleBtn.innerHTML = mood.icon;
+          showToast("success", "Mood on", `Playing: ${mood.name} ${mood.icon}`);
+        }
+      }
+
+      // ========== FLEX EXPORT (Canvas 2D Version) ==========
+      function drawRoundRect(ctx, x, y, width, height, radius, fill, stroke) {
+        ctx.beginPath();
+        ctx.moveTo(x + radius, y);
+        ctx.lineTo(x + width - radius, y);
+        ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+        ctx.lineTo(x + width, y + height - radius);
+        ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        ctx.lineTo(x + radius, y + height);
+        ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+        ctx.lineTo(x, y + radius);
+        ctx.quadraticCurveTo(x, y, x + radius, y);
+        ctx.closePath();
+        if (fill) ctx.fill();
+        if (stroke) ctx.stroke();
+      }
+
+      function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+        const words = text.split(' ');
+        let line = '';
+        let lines = [];
+        for (let n = 0; n < words.length; n++) {
+          let testLine = line + words[n] + ' ';
+          let testWidth = ctx.measureText(testLine).width;
+          if (testWidth > maxWidth && n > 0) {
+            lines.push(line);
+            line = words[n] + ' ';
+          } else {
+            line = testLine;
+          }
+        }
+        lines.push(line);
+        for (let i = 0; i < lines.length; i++) {
+          ctx.fillText(lines[i], x, y + (i * lineHeight));
+        }
+        return lines.length * lineHeight;
+      }
+
+      async function exportFlex(ratio) {
+        showToast("info", "Rendering...", "Generating peak flex image! 📸");
+        
+        // Wait for fonts to be ready so canvas draws proper typography
+        await document.fonts.ready;
+
+        const totalOverallTime = totalMinutes + totalBreakMinutes;
+        const focusPct = totalOverallTime === 0 ? 100 : Math.round((totalMinutes / totalOverallTime) * 100);
+        const avgSession = sessionCount > 0 ? Math.round(totalMinutes / sessionCount) : 0;
+        const prodScore = Math.min(100, Math.round((totalMinutes / 180) * 100));
+
+        const quotes = currentTheme === "male"
+            ? [
+                "Cày sâu cuốc bẫm, ngày sau gáy to! 💎",
+                "Hôm nay chạy code, ngày mai chạy Mẹc! 🚀",
+                "Kỷ luật thép tạo nên kim cương! ⚡",
+              ]
+            : [
+                "Xinh đẹp và giỏi giang, tớ có cả hai! 💕",
+                "Mỗi phút trôi qua đều tỏa sáng! ✨",
+                "Sự tập trung làm nên thần thái! 🌸",
+              ];
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        const dateOptions = { month: "short", day: "numeric", year: "numeric" };
+        const dateStr = sessionStartTime.toLocaleDateString("en-US", dateOptions).toUpperCase();
+
+        const canvas = document.createElement('canvas');
+        let width = ratio === '9:16' ? 1080 : 1600;
+        let height = ratio === '9:16' ? 1920 : 900;
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+
+        if (ratio !== '9:16') {
+          // ================= DRAW 16:9 LANDSCAPE =================
+          // 1. Draw Background Gradient
+          const bgGrad = ctx.createLinearGradient(0, 0, width, height);
+          bgGrad.addColorStop(0, '#09090b');
+          bgGrad.addColorStop(0.5, '#111119');
+          bgGrad.addColorStop(1, '#0c0714');
+          ctx.fillStyle = bgGrad;
+          ctx.fillRect(0, 0, width, height);
+
+          // 2. Draw Glow Orbs
+          // Left Top Pink Orb
+          let pGlow = ctx.createRadialGradient(200, 200, 50, 200, 200, 500);
+          pGlow.addColorStop(0, 'rgba(255, 46, 147, 0.15)');
+          pGlow.addColorStop(1, 'rgba(255, 46, 147, 0)');
+          ctx.fillStyle = pGlow;
+          ctx.beginPath();
+          ctx.arc(200, 200, 500, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Right Bottom Orange Orb
+          let oGlow = ctx.createRadialGradient(width - 200, height - 200, 50, width - 200, height - 200, 500);
+          oGlow.addColorStop(0, 'rgba(255, 128, 0, 0.12)');
+          oGlow.addColorStop(1, 'rgba(255, 128, 0, 0)');
+          ctx.fillStyle = oGlow;
+          ctx.beginPath();
+          ctx.arc(width - 200, height - 200, 500, 0, Math.PI * 2);
+          ctx.fill();
+
+          // 3. Draw Main Card (Bo góc, Glassmorphism)
+          ctx.save();
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.07)';
+          ctx.lineWidth = 2;
+          drawRoundRect(ctx, 80, 60, width - 160, height - 120, 36, true, true);
+          ctx.restore();
+
+          // 4. Header Text
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '900 48px "Space Mono", "DM Sans", sans-serif';
+          ctx.fillText('FOCUS REPORT', 140, 140);
+
+          ctx.fillStyle = '#a1a1aa';
+          ctx.font = '700 20px "Space Mono", monospace';
+          ctx.fillText(`${dateStr} SESSION`, 140, 185);
+
+          ctx.font = '900 42px "DM Sans", sans-serif';
+          ctx.fillText('⏱️', width - 200, 145);
+
+          // 5. Draw KPI Cards (4 cards)
+          const kpis = [
+            { label: 'TOTAL FOCUS', value: `${totalMinutes}`, unit: 'min' },
+            { label: 'SESSIONS', value: `${sessionCount}`, unit: '' },
+            { label: 'MAX STREAK', value: `${maxStreak}`, unit: '🔥' },
+            { label: 'AVG SESSION', value: `${avgSession}`, unit: 'min' }
+          ];
+
+          const startX = 140;
+          const kpiW = (width - 340 - 90) / 4; // 4 cards with 30px gap
+          const kpiH = 150;
+          const kpiY = 230;
+
+          kpis.forEach((kpi, idx) => {
+            const x = startX + idx * (kpiW + 30);
+            // Draw KPI border & fill
+            ctx.save();
+            if (idx === 2) {
+              // Highlight Streak card
+              ctx.fillStyle = 'rgba(255, 46, 147, 0.08)';
+              ctx.strokeStyle = 'rgba(255, 46, 147, 0.3)';
+            } else {
+              ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+              ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+            }
+            ctx.lineWidth = 1.5;
+            drawRoundRect(ctx, x, kpiY, kpiW, kpiH, 20, true, true);
+            ctx.restore();
+
+            // Labels
+            ctx.fillStyle = '#a1a1aa';
+            ctx.font = '700 14px "Space Mono", "DM Sans", sans-serif';
+            ctx.fillText(kpi.label, x + 25, kpiY + 45);
+
+            // Values
+            ctx.fillStyle = idx === 2 ? '#ff2e93' : '#ffffff';
+            ctx.font = '900 38px "Space Mono", monospace';
+            ctx.fillText(kpi.value, x + 25, kpiY + 105);
+
+            if (kpi.unit) {
+              ctx.fillStyle = idx === 2 ? 'rgba(255, 46, 147, 0.7)' : '#a1a1aa';
+              ctx.font = '500 16px "DM Sans", sans-serif';
+              ctx.fillText(kpi.unit, x + 25 + ctx.measureText(kpi.value).width + 8, kpiY + 100);
+            }
+          });
+
+          // 6. Draw Wave Chart (Left bottom)
+          const chartX = 140;
+          const chartY = 430;
+          const chartW = 600;
+          const chartH = 260;
+
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+          drawRoundRect(ctx, chartX, chartY, chartW, chartH, 24, true, true);
+
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '800 18px "DM Sans", sans-serif';
+          ctx.fillText('ACTIVITY WAVE', chartX + 30, chartY + 45);
+
+          // Draw spline
+          const focusSessions = sessionHistory.filter(s => s.type === "focus");
+          if (focusSessions.length > 0) {
+            const maxDuration = Math.max(...focusSessions.map(s => s.duration), 1);
+            const graphW = chartW - 80;
+            const graphH = chartH - 110;
+            const graphX = chartX + 40;
+            const graphY = chartY + 80;
+            const stepX = focusSessions.length > 1 ? graphW / (focusSessions.length - 1) : graphW;
+
+            ctx.save();
+            // Create Gradient for Line
+            const lineGrad = ctx.createLinearGradient(graphX, 0, graphX + graphW, 0);
+            lineGrad.addColorStop(0, '#FF2E93');
+            lineGrad.addColorStop(1, '#FF8000');
+
+            // Draw area gradient under curve
+            const areaGrad = ctx.createLinearGradient(0, graphY, 0, graphY + graphH);
+            areaGrad.addColorStop(0, 'rgba(255, 46, 147, 0.3)');
+            areaGrad.addColorStop(1, 'rgba(255, 128, 0, 0)');
+
+            ctx.beginPath();
+            ctx.moveTo(graphX, graphY + graphH);
+            focusSessions.forEach((s, i) => {
+              const x = graphX + (focusSessions.length === 1 ? graphW / 2 : i * stepX);
+              const y = graphY + graphH - (s.duration / maxDuration) * graphH;
+              ctx.lineTo(x, y);
+            });
+            ctx.lineTo(graphX + (focusSessions.length === 1 ? graphW / 2 : (focusSessions.length - 1) * stepX), graphY + graphH);
+            ctx.closePath();
+            ctx.fillStyle = areaGrad;
+            ctx.fill();
+
+            // Draw line
+            ctx.beginPath();
+            focusSessions.forEach((s, i) => {
+              const x = graphX + (focusSessions.length === 1 ? graphW / 2 : i * stepX);
+              const y = graphY + graphH - (s.duration / maxDuration) * graphH;
+              if (i === 0) ctx.moveTo(x, y);
+              else ctx.lineTo(x, y);
+            });
+            ctx.strokeStyle = lineGrad;
+            ctx.lineWidth = 4;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.stroke();
+
+            // Draw Points
+            focusSessions.forEach((s, i) => {
+              const x = graphX + (focusSessions.length === 1 ? graphW / 2 : i * stepX);
+              const y = graphY + graphH - (s.duration / maxDuration) * graphH;
+              ctx.beginPath();
+              ctx.arc(x, y, 5, 0, Math.PI * 2);
+              ctx.fillStyle = '#ffffff';
+              ctx.fill();
+              ctx.strokeStyle = '#FF2E93';
+              ctx.lineWidth = 2.5;
+              ctx.stroke();
+            });
+            ctx.restore();
+          } else {
+            ctx.fillStyle = '#a1a1aa';
+            ctx.font = '500 16px "DM Sans", sans-serif';
+            ctx.fillText('No focus session data yet.', chartX + 40, chartY + 130);
+          }
+
+          // 7. Draw Donut Chart (Right bottom)
+          const donutX = 800;
+          const donutY = 430;
+          const donutW = width - 140 - donutX;
+          const donutH = 260;
+
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+          drawRoundRect(ctx, donutX, donutY, donutW, donutH, 24, true, true);
+
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '800 18px "DM Sans", sans-serif';
+          ctx.fillText('FOCUS VS BREAK', donutX + 30, donutY + 45);
+
+          // Draw Donut
+          const cx = donutX + donutW / 2;
+          const cy = donutY + donutH / 2 + 10;
+          const r = 60;
+          
+          // Background ring
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+          ctx.lineWidth = 14;
+          ctx.stroke();
+
+          // Progress ring
+          ctx.save();
+          const angle = (focusPct / 100) * Math.PI * 2;
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, -Math.PI / 2, angle - Math.PI / 2);
+          const donutGrad = ctx.createLinearGradient(cx - r, cy - r, cx + r, cy + r);
+          donutGrad.addColorStop(0, '#FF2E93');
+          donutGrad.addColorStop(1, '#FF8000');
+          ctx.strokeStyle = donutGrad;
+          ctx.lineWidth = 14;
+          ctx.lineCap = 'round';
+          ctx.stroke();
+          ctx.restore();
+
+          // Text in center
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '900 24px "Space Mono", monospace';
+          ctx.textAlign = 'center';
+          ctx.fillText(`${focusPct}%`, cx, cy + 8);
+          ctx.restore(); // reset textAlign
+
+          // 8. Footer Info & Watermark
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+          ctx.font = '700 14px "Space Mono", monospace';
+          ctx.fillText(`GRINDER: ${userName.toUpperCase()}`, 140, 755);
+
+          ctx.fillStyle = 'rgba(255, 46, 147, 0.8)';
+          ctx.font = 'italic 16px "DM Sans", sans-serif';
+          ctx.fillText(`"${randomQuote}"`, 140, 790);
+
+          // (Moshi text moved to end for glitch effect)
+        } else {
+          // ================= DRAW 9:16 PORTRAIT (STORY) =================
+          // 1. Draw Background Gradient
+          const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
+          bgGrad.addColorStop(0, '#050508');
+          bgGrad.addColorStop(0.5, '#120d1a');
+          bgGrad.addColorStop(1, '#07040a');
+          ctx.fillStyle = bgGrad;
+          ctx.fillRect(0, 0, width, height);
+
+          // 2. Draw Glow Orbs
+          // Top Pink Glow
+          let topGlow = ctx.createRadialGradient(width/2, 200, 50, width/2, 200, 450);
+          topGlow.addColorStop(0, 'rgba(255, 46, 147, 0.12)');
+          topGlow.addColorStop(1, 'rgba(255, 46, 147, 0)');
+          ctx.fillStyle = topGlow;
+          ctx.beginPath();
+          ctx.arc(width/2, 200, 450, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Bottom Orange Glow
+          let botGlow = ctx.createRadialGradient(width/2, height - 300, 50, width/2, height - 300, 500);
+          botGlow.addColorStop(0, 'rgba(255, 128, 0, 0.15)');
+          botGlow.addColorStop(1, 'rgba(255, 128, 0, 0)');
+          ctx.fillStyle = botGlow;
+          ctx.beginPath();
+          ctx.arc(width/2, height - 300, 500, 0, Math.PI * 2);
+          ctx.fill();
+
+          // 3. Draw Main Card (Glassmorphism)
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+          ctx.lineWidth = 2.5;
+          drawRoundRect(ctx, 70, 100, width - 140, height - 200, 48, true, true);
+
+          // 4. Header
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '900 48px "Space Mono", "DM Sans", sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('DAILY FOCUS', width / 2, 200);
+
+          ctx.fillStyle = '#a1a1aa';
+          ctx.font = '700 22px "Space Mono", monospace';
+          ctx.fillText(dateStr, width / 2, 250);
+
+          // 5. Giant STREAK Badge (Center of Story)
+          const badgeY = 600;
+          ctx.save();
+          // Draw Glowing Circle for Badge
+          let badgeGlow = ctx.createRadialGradient(width/2, badgeY, 80, width/2, badgeY, 200);
+          badgeGlow.addColorStop(0, 'rgba(255, 46, 147, 0.2)');
+          badgeGlow.addColorStop(1, 'rgba(255, 46, 147, 0)');
+          ctx.fillStyle = badgeGlow;
+          ctx.beginPath();
+          ctx.arc(width/2, badgeY, 200, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Ring
+          ctx.beginPath();
+          ctx.arc(width/2, badgeY, 150, 0, Math.PI * 2);
+          const badgeGrad = ctx.createLinearGradient(width/2 - 150, badgeY - 150, width/2 + 150, badgeY + 150);
+          badgeGrad.addColorStop(0, '#FF2E93');
+          badgeGrad.addColorStop(1, '#FF8000');
+          ctx.strokeStyle = badgeGrad;
+          ctx.lineWidth = 10;
+          ctx.stroke();
+          ctx.restore();
+
+          // Streak Number & Flame
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '900 130px "Space Mono", monospace';
+          ctx.textAlign = 'center';
+          ctx.fillText(`${streakCount}`, width / 2 - 25, badgeY + 30);
+          
+          ctx.font = '900 90px "DM Sans", sans-serif';
+          ctx.fillText('🔥', width / 2 + 80, badgeY + 15);
+
+          ctx.fillStyle = '#a1a1aa';
+          ctx.font = '700 20px "Space Mono", monospace';
+          ctx.fillText('CURRENT STREAK', width / 2, badgeY + 200);
+
+          // 6. User Personalization Info
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '900 32px "DM Sans", sans-serif';
+          ctx.fillText(userName.toUpperCase(), width / 2, 980);
+          
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+          ctx.font = '700 16px "Space Mono", monospace';
+          ctx.fillText('GRIND MODE: ACTIVE', width / 2, 1025);
+
+          // 7. Stats List (Vertically aligned)
+          const statsY = 1120;
+          const statsW = 740;
+          const statsX = width / 2 - statsW / 2;
+
+          const vertStats = [
+            { label: 'TOTAL MINUTES FOCUS', value: `${totalMinutes} MIN` },
+            { label: 'COMPLETED SESSIONS', value: `${sessionCount} SESSIONS` },
+            { label: 'PRODUCTIVITY RATING', value: `${prodScore}/100` }
+          ];
+
+          vertStats.forEach((st, idx) => {
+            const y = statsY + idx * 125;
+            // Background
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+            drawRoundRect(ctx, statsX, y, statsW, 95, 16, true, true);
+
+            // Label
+            ctx.fillStyle = '#a1a1aa';
+            ctx.font = '700 14px "Space Mono", monospace';
+            ctx.textAlign = 'left';
+            ctx.fillText(st.label, statsX + 25, y + 40);
+
+            // Value
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '900 24px "Space Mono", monospace';
+            ctx.textAlign = 'right';
+            ctx.fillText(st.value, statsX + statsW - 25, y + 55);
+          });
+          ctx.textAlign = 'center'; // restore center
+
+          // 8. Bottom Quote & Watermark
+          ctx.fillStyle = '#ff2e93';
+          ctx.font = 'italic 24px "DM Sans", sans-serif';
+          wrapText(ctx, `"${randomQuote}"`, width / 2, 1550, 800, 36);
+
+          // (Moshi text moved to end for glitch effect)
+        }
+
+        // ================= HACKER CRT NOISE (V3.0 Psychology) =================
+        const imgData = ctx.getImageData(0, 0, width, height);
+        const data = imgData.data;
+        for (let i = 0; i < data.length; i += 4) {
+           const noise = Math.random() * 20 - 10;
+           data[i] += noise;
+           data[i+1] += noise;
+           data[i+2] += noise;
+        }
+        ctx.putImageData(imgData, 0, 0);
+
+        // Draw Glitch "POWERED BY MOSHI"
+        ctx.textAlign = ratio === '9:16' ? 'center' : 'right';
+        const txtX = ratio === '9:16' ? width / 2 : width - 140;
+        const txtY = ratio === '9:16' ? 1720 : 770;
+        ctx.font = '900 20px "Space Mono", monospace';
+        
+        ctx.fillStyle = 'rgba(0, 255, 255, 0.8)';
+        ctx.fillText('⚡ POWERED BY MOSHI ⚡', txtX - 2, txtY);
+        ctx.fillStyle = 'rgba(255, 0, 255, 0.8)';
+        ctx.fillText('⚡ POWERED BY MOSHI ⚡', txtX + 2, txtY);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.fillText('⚡ POWERED BY MOSHI ⚡', txtX, txtY);
+
+        // Tải ảnh
+        try {
+          const link = document.createElement('a');
+          link.download = `pomodoro-flex-${ratio.replace(':', 'x')}-${new Date().getTime()}.png`;
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+          showToast("success", "Exported!", "Your flex image is ready! 🎉");
+        } catch(e) {
+          console.error("Canvas Export Error:", e);
+          showToast("error", "Failed", "Could not export image.");
+        }
+      }
+
+      // ========== LATE NIGHT GRIND MODE ==========
+      function checkLateNightMode() {
+        const hour = new Date().getHours();
+        if (hour >= 22 || hour <= 4) {
+            document.body.classList.add('late-night-mode');
+            if(!document.body.dataset.nightToastShown) {
+                showToast("info", "Late Night Grind 🌙", "Dark mode activated. Keep pushing!");
+                document.body.dataset.nightToastShown = 'true';
+            }
+        } else {
+            document.body.classList.remove('late-night-mode');
+            document.body.dataset.nightToastShown = '';
+        }
+      }
+      
+      setInterval(checkLateNightMode, 60000);
+      checkLateNightMode();
+
+      // ========== FULLSCREEN FOCUS MODE ==========
+      function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch((err) => {
+            showToast("error", "Error", "Fullscreen API not supported by your browser");
+          });
+        } else {
+          document.exitFullscreen();
+        }
+      }
+
+      document.addEventListener('fullscreenchange', () => {
+        if (document.fullscreenElement) {
+          document.body.classList.add('fullscreen-active');
+          showToast("info", "Focus Mode", "Pure immersion activated! 🚀");
+        } else {
+          document.body.classList.remove('fullscreen-active');
+        }
+      });
 
       // ========== KEYBOARD SHORTCUTS ==========
       document.addEventListener("keydown", (e) => {
