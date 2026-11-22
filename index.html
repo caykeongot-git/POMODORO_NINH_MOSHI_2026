@@ -13,26 +13,26 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
-      /* ========== MATTE GLACIAL SLATE TOKENS (SINGLE COLD THEME) ========== */
+      /* ========== 3D TACTILE GLACIAL SLATE DESIGN SYSTEM ========== */
       :root {
-        --bg-base: #0d1520;
-        --bg-surface: #131e2e;
+        --bg-base: #0a111a;
+        --bg-surface: rgba(18, 29, 46, 0.84);
+        --bg-surface-elevated: rgba(24, 38, 60, 0.9);
         --bg-control: #1a283d;
-        --bg-control-hover: #21324c;
-        --border-hairline: rgba(186, 224, 250, 0.09);
-        --border-hover: rgba(186, 224, 250, 0.22);
+        --border-hairline: rgba(186, 224, 250, 0.14);
+        --border-specular: rgba(255, 255, 255, 0.32);
+        --border-hover: rgba(186, 224, 250, 0.35);
         --text-primary: #e8f3fc;
         --text-secondary: #9bb4ce;
-        --text-muted: #6884a3;
+        --text-muted: #6b87a8;
         --ice-accent: #67c6f5;
-        --ice-track: rgba(155, 180, 206, 0.14);
-        --btn-primary-bg: #e0f2fe;
-        --btn-primary-bg-hover: #f0f9ff;
-        --btn-primary-fg: #091928;
+        --ice-track: rgba(155, 180, 206, 0.16);
+        --btn-primary-bg: linear-gradient(180deg, #f0f9ff 0%, #cbe5f8 100%);
+        --btn-primary-fg: #081726;
         --danger: #f87171;
         --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
         --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -55,16 +55,46 @@
       body {
         font-family: var(--font-sans);
         background-color: var(--bg-base);
-        background-image: radial-gradient(
-          ellipse 80% 55% at 50% 0%,
-          rgba(103, 198, 245, 0.055) 0%,
-          transparent 70%
-        );
         color: var(--text-primary);
         min-height: 100dvh;
         overflow-x: hidden;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        position: relative;
+      }
+
+      /* ========== CINEMATIC MATTE BACKGROUND WITH EYE-COMFORT DIMMING ========== */
+      .bg-layer {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        background-image:
+          url('background.png'),
+          url('ChatGPT%20Image%20Sep%2021,%202026,%2001_41_37%20PM.png');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        filter: brightness(0.38) saturate(0.85); /* Kéo sáng dịu mắt, không chói khi nhìn lâu */
+        transform: scale(1.02);
+        pointer-events: none;
+        transition: filter 0.8s var(--ease-out);
+        will-change: filter;
+      }
+
+      .bg-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        background: radial-gradient(
+          circle at 50% 45%,
+          rgba(10, 17, 27, 0.38) 0%,
+          rgba(6, 11, 18, 0.82) 100%
+        );
+        pointer-events: none;
+      }
+
+      body.is-running .bg-layer {
+        filter: brightness(0.25) saturate(0.8); /* Dịu mắt hơn nữa khi đang học */
       }
 
       button,
@@ -86,16 +116,18 @@
 
       /* ========== APP SHELL ========== */
       .app-shell {
+        position: relative;
+        z-index: 2;
         min-height: 100dvh;
         display: flex;
         flex-direction: column;
-        padding: 20px clamp(18px, 4vw, 44px);
+        padding: 22px clamp(18px, 4vw, 44px);
       }
 
-      /* ========== MINIMAL FLOATING HEADER ========== */
+      /* ========== FLOATING HEADER ========== */
       .app-header {
         position: relative;
-        z-index: 20;
+        z-index: 25;
         width: 100%;
         max-width: 1160px;
         margin: 0 auto;
@@ -107,7 +139,7 @@
       }
 
       body.is-running .app-header {
-        opacity: 0.48;
+        opacity: 0.52;
       }
 
       body.is-running .app-header:hover,
@@ -122,64 +154,84 @@
         gap: 9px;
         justify-self: start;
         color: var(--text-secondary);
-        font-size: 0.9rem;
-        font-weight: 500;
+        font-size: 0.92rem;
+        font-weight: 600;
         letter-spacing: -0.01em;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
       }
 
       .brand svg {
         color: var(--ice-accent);
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
       }
 
       .live-clock {
         justify-self: center;
         font-family: var(--font-mono);
         font-variant-numeric: tabular-nums;
-        font-size: 0.86rem;
+        font-size: 0.88rem;
         font-weight: 500;
         color: var(--text-muted);
-        letter-spacing: 0.04em;
+        letter-spacing: 0.05em;
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
       }
 
       .header-actions {
         justify-self: end;
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
         position: relative;
       }
 
+      /* 3D Glass Icon Button */
       .icon-btn {
-        width: 36px;
-        height: 36px;
-        border-radius: 10px;
+        width: 38px;
+        height: 38px;
+        border-radius: 11px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         color: var(--text-secondary);
-        background: transparent;
-        border: 1px solid transparent;
+        background: linear-gradient(180deg, rgba(28, 43, 66, 0.7) 0%, rgba(16, 26, 42, 0.7) 100%);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid var(--border-hairline);
+        border-top: 1px solid var(--border-specular);
+        box-shadow:
+          0 4px 10px rgba(0, 0, 0, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15);
         transition:
-          background-color 0.2s var(--ease-out),
+          background 0.2s var(--ease-out),
           border-color 0.2s var(--ease-out),
           color 0.2s var(--ease-out),
-          transform 0.18s var(--ease-out);
+          transform 0.16s var(--ease-out),
+          box-shadow 0.16s var(--ease-out);
       }
 
       .icon-btn:hover {
         color: var(--text-primary);
-        background: var(--bg-surface);
-        border-color: var(--border-hairline);
+        border-color: var(--border-hover);
+        transform: translateY(-1px);
+        box-shadow:
+          0 6px 14px rgba(0, 0, 0, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.25);
       }
 
       .icon-btn:active {
-        transform: scale(0.94);
+        transform: translateY(1.5px);
+        box-shadow:
+          0 2px 4px rgba(0, 0, 0, 0.4),
+          inset 0 2px 4px rgba(0, 0, 0, 0.4);
       }
 
       .icon-btn.is-active {
-        color: var(--ice-accent);
-        background: var(--bg-surface);
-        border-color: var(--border-hover);
+        color: #ffffff;
+        border-color: var(--ice-accent);
+        background: linear-gradient(180deg, rgba(42, 68, 102, 0.85) 0%, rgba(22, 38, 62, 0.85) 100%);
+        box-shadow:
+          0 4px 14px rgba(103, 198, 245, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.3);
       }
 
       /* ========== HERO FOCUS STAGE ========== */
@@ -189,20 +241,26 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: clamp(22px, 3.6vh, 34px);
-        padding: 20px 0 32px;
+        gap: clamp(24px, 4vh, 36px);
+        padding: 16px 0 32px;
       }
 
-      /* Mode Switcher */
+      /* 3D Recessed Mode Switcher */
       .mode-switch {
         position: relative;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         width: min(356px, 92vw);
         padding: 4px;
-        border-radius: 12px;
-        background: var(--bg-surface);
-        border: 1px solid var(--border-hairline);
+        border-radius: 13px;
+        background: rgba(12, 20, 32, 0.82);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(186, 224, 250, 0.12);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow:
+          inset 0 2px 5px rgba(0, 0, 0, 0.6),
+          0 6px 16px rgba(0, 0, 0, 0.35);
         --seg-idx: 0;
       }
 
@@ -212,9 +270,13 @@
         left: 4px;
         bottom: 4px;
         width: calc((100% - 8px) / 3);
-        border-radius: 8px;
-        background: var(--bg-control);
-        border: 1px solid var(--border-hairline);
+        border-radius: 9px;
+        background: linear-gradient(180deg, #243852 0%, #152234 100%);
+        border: 1px solid rgba(186, 224, 250, 0.22);
+        border-top: 1.5px solid rgba(255, 255, 255, 0.3);
+        box-shadow:
+          0 3px 8px rgba(0, 0, 0, 0.45),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
         transform: translate3d(calc(var(--seg-idx) * 100%), 0, 0);
         transition: transform 0.36s var(--ease-out);
         will-change: transform;
@@ -224,11 +286,11 @@
       .mode-btn {
         position: relative;
         z-index: 1;
-        height: 34px;
-        font-size: 0.82rem;
+        height: 36px;
+        font-size: 0.83rem;
         font-weight: 500;
         color: var(--text-muted);
-        border-radius: 8px;
+        border-radius: 9px;
         transition: color 0.22s var(--ease-out);
       }
 
@@ -238,18 +300,43 @@
 
       .mode-btn.active {
         color: var(--text-primary);
+        font-weight: 600;
       }
 
-      /* Chronometer Ring */
+      /* ========== 3D TACTILE CHRONOMETER INSTRUMENT ========== */
       .chronometer {
         position: relative;
-        width: min(404px, 86vw);
+        width: min(390px, 86vw);
         aspect-ratio: 1;
         display: grid;
         place-items: center;
       }
 
+      /* 3D Beveled Dial Dish */
+      .chronometer-dish {
+        position: absolute;
+        inset: -10px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 50% 28%,
+          rgba(28, 44, 68, 0.68) 0%,
+          rgba(11, 18, 29, 0.88) 100%
+        );
+        backdrop-filter: blur(20px) saturate(140%);
+        -webkit-backdrop-filter: blur(20px) saturate(140%);
+        border: 1px solid rgba(186, 224, 250, 0.16);
+        border-top: 1.5px solid rgba(255, 255, 255, 0.32); /* 3D specular highlight */
+        box-shadow:
+          0 32px 70px -10px rgba(0, 0, 0, 0.85),
+          0 12px 28px rgba(0, 0, 0, 0.5),
+          inset 0 2px 4px rgba(255, 255, 255, 0.16),
+          inset 0 -5px 16px rgba(0, 0, 0, 0.6); /* 3D rim depth */
+        pointer-events: none;
+      }
+
       .chrono-svg {
+        position: relative;
+        z-index: 2;
         width: 100%;
         height: 100%;
         overflow: visible;
@@ -258,59 +345,72 @@
       .chrono-track {
         fill: none;
         stroke: var(--ice-track);
-        stroke-width: 4.5;
+        stroke-width: 5;
       }
 
       .chrono-arc {
         fill: none;
         stroke: var(--ice-accent);
-        stroke-width: 4.5;
+        stroke-width: 5;
         stroke-linecap: round;
         transform: rotate(-90deg);
         transform-origin: 180px 180px;
+        filter: drop-shadow(0 0 6px rgba(103, 198, 245, 0.38));
       }
 
       .chrono-tip {
-        fill: var(--text-primary);
+        fill: #ffffff;
+        filter: drop-shadow(0 0 5px #67c6f5);
         transition: opacity 0.25s ease;
       }
 
       .chrono-inner {
+        position: relative;
+        z-index: 3;
         position: absolute;
-        inset: 42px;
+        inset: 40px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         text-align: center;
-        gap: 10px;
+        gap: 12px;
         pointer-events: none;
       }
 
       .chrono-digits {
         font-family: var(--font-mono);
         font-variant-numeric: tabular-nums;
-        font-size: clamp(4.2rem, 8vw, 5.75rem);
+        font-size: clamp(4.3rem, 8.2vw, 5.8rem);
         font-weight: 600;
         line-height: 1;
         letter-spacing: -0.04em;
         color: var(--text-primary);
+        text-shadow:
+          0 2px 10px rgba(0, 0, 0, 0.75),
+          0 0 28px rgba(103, 198, 245, 0.22);
       }
 
+      /* 3D Recessed Task Input */
       .task-inline-input {
         pointer-events: auto;
-        width: min(230px, 60vw);
-        background: transparent;
-        border: none;
-        border-bottom: 1px solid transparent;
-        padding: 4px 6px;
+        width: min(236px, 62vw);
+        background: rgba(8, 14, 24, 0.5);
+        border: 1px solid rgba(186, 224, 250, 0.12);
+        border-top: 1px solid rgba(0, 0, 0, 0.5);
+        border-radius: 999px;
+        padding: 5px 12px;
         text-align: center;
-        font-size: 0.86rem;
+        font-size: 0.84rem;
         font-weight: 400;
         color: var(--text-secondary);
+        box-shadow:
+          inset 0 1px 3px rgba(0, 0, 0, 0.45),
+          0 1px 0 rgba(255, 255, 255, 0.06);
         transition:
           border-color 0.2s var(--ease-out),
-          color 0.2s var(--ease-out);
+          color 0.2s var(--ease-out),
+          background 0.2s var(--ease-out);
       }
 
       .task-inline-input::placeholder {
@@ -318,25 +418,31 @@
       }
 
       .task-inline-input:hover {
-        border-bottom-color: var(--border-hairline);
+        border-color: var(--border-hover);
+        color: var(--text-primary);
       }
 
       .task-inline-input:focus {
         outline: none;
         color: var(--text-primary);
-        border-bottom-color: var(--ice-accent);
+        background: rgba(8, 14, 24, 0.7);
+        border-color: var(--ice-accent);
+        box-shadow:
+          inset 0 1px 3px rgba(0, 0, 0, 0.45),
+          0 0 8px rgba(103, 198, 245, 0.25);
       }
 
       .eta-line {
         font-family: var(--font-mono);
         font-variant-numeric: tabular-nums;
-        font-size: 0.76rem;
+        font-size: 0.77rem;
         color: var(--text-muted);
         opacity: 0;
         transform: translate3d(0, 4px, 0);
         transition:
           opacity 0.3s var(--ease-out),
           transform 0.3s var(--ease-out);
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
       }
 
       body.is-running .eta-line {
@@ -344,7 +450,7 @@
         transform: translate3d(0, 0, 0);
       }
 
-      /* Primary Controls */
+      /* ========== CONTROLS BLOCK ========== */
       .controls-block {
         display: flex;
         flex-direction: column;
@@ -355,64 +461,96 @@
       .controls-row {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 14px;
       }
 
+      /* 3D Tactile Primary Button */
       .btn-primary {
-        height: 46px;
-        min-width: 136px;
+        height: 48px;
+        min-width: 144px;
         padding: 0 24px;
-        border-radius: 12px;
+        border-radius: 13px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
-        font-size: 0.92rem;
+        gap: 9px;
+        font-size: 0.94rem;
         font-weight: 600;
         background: var(--btn-primary-bg);
         color: var(--btn-primary-fg);
+        border: 1px solid rgba(255, 255, 255, 0.85);
+        box-shadow:
+          0 6px 18px rgba(0, 0, 0, 0.45),
+          0 2px 4px rgba(0, 0, 0, 0.25),
+          inset 0 1px 0 #ffffff,
+          inset 0 -2px 0 #b3daf5;
         transition:
-          background-color 0.2s var(--ease-out),
-          transform 0.18s var(--ease-out);
+          transform 0.15s var(--ease-out),
+          box-shadow 0.15s var(--ease-out),
+          background 0.2s var(--ease-out);
         will-change: transform;
       }
 
       .btn-primary:hover {
-        background: var(--btn-primary-bg-hover);
+        background: linear-gradient(180deg, #ffffff 0%, #d8effa 100%);
+        transform: translateY(-1.5px);
+        box-shadow:
+          0 8px 24px rgba(0, 0, 0, 0.5),
+          0 2px 6px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 #ffffff,
+          inset 0 -2px 0 #b3daf5;
       }
 
       .btn-primary:active {
-        transform: scale(0.96);
+        transform: translateY(2px);
+        box-shadow:
+          0 2px 6px rgba(0, 0, 0, 0.4),
+          inset 0 2px 4px rgba(0, 0, 0, 0.25);
       }
 
+      /* 3D Secondary Button */
       .btn-secondary {
-        width: 46px;
-        height: 46px;
-        border-radius: 12px;
+        width: 48px;
+        height: 48px;
+        border-radius: 13px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         color: var(--text-secondary);
-        background: var(--bg-surface);
+        background: linear-gradient(180deg, rgba(32, 49, 74, 0.85) 0%, rgba(19, 30, 48, 0.85) 100%);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
         border: 1px solid var(--border-hairline);
+        border-top: 1px solid var(--border-specular);
+        box-shadow:
+          0 4px 12px rgba(0, 0, 0, 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.16);
         transition:
-          background-color 0.2s var(--ease-out),
+          background 0.2s var(--ease-out),
           border-color 0.2s var(--ease-out),
           color 0.2s var(--ease-out),
-          transform 0.18s var(--ease-out);
+          transform 0.16s var(--ease-out),
+          box-shadow 0.16s var(--ease-out);
       }
 
       .btn-secondary:hover {
         color: var(--text-primary);
-        background: var(--bg-control);
+        background: linear-gradient(180deg, rgba(38, 58, 88, 0.9) 0%, rgba(24, 38, 60, 0.9) 100%);
         border-color: var(--border-hover);
+        transform: translateY(-1.5px);
+        box-shadow:
+          0 6px 16px rgba(0, 0, 0, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.22);
       }
 
       .btn-secondary:active {
-        transform: scale(0.94);
+        transform: translateY(1.5px);
+        box-shadow:
+          0 2px 4px rgba(0, 0, 0, 0.4),
+          inset 0 2px 4px rgba(0, 0, 0, 0.35);
       }
 
-      /* Presets Row (Auto-fades cleanly while running) */
+      /* Presets Row */
       .presets-row {
         display: flex;
         flex-wrap: wrap;
@@ -431,47 +569,59 @@
         pointer-events: none;
       }
 
+      /* 3D Preset Button */
       .preset-btn {
-        height: 30px;
-        padding: 0 11px;
-        border-radius: 8px;
-        font-size: 0.78rem;
+        height: 32px;
+        padding: 0 12px;
+        border-radius: 9px;
+        font-size: 0.8rem;
         font-weight: 500;
         font-family: var(--font-mono);
         color: var(--text-muted);
-        background: var(--bg-surface);
+        background: linear-gradient(180deg, rgba(26, 40, 62, 0.8) 0%, rgba(16, 26, 42, 0.8) 100%);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
         border: 1px solid var(--border-hairline);
+        border-top: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow:
+          0 2px 6px rgba(0, 0, 0, 0.28),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
         transition:
           color 0.2s var(--ease-out),
-          background-color 0.2s var(--ease-out),
+          background 0.2s var(--ease-out),
           border-color 0.2s var(--ease-out),
-          transform 0.16s var(--ease-out);
+          transform 0.15s var(--ease-out);
       }
 
       .preset-btn:hover {
         color: var(--text-primary);
         border-color: var(--border-hover);
+        transform: translateY(-1px);
       }
 
       .preset-btn.active {
-        color: var(--ice-accent);
-        background: var(--bg-control);
-        border-color: var(--border-hover);
+        color: #ffffff;
+        background: linear-gradient(180deg, rgba(38, 62, 94, 0.9) 0%, rgba(22, 38, 62, 0.9) 100%);
+        border-color: var(--ice-accent);
+        box-shadow:
+          0 3px 12px rgba(103, 198, 245, 0.28),
+          inset 0 1px 0 rgba(255, 255, 255, 0.28);
       }
 
       .preset-btn:active {
-        transform: scale(0.95);
+        transform: scale(0.96);
       }
 
       .custom-form {
         display: inline-flex;
         align-items: center;
-        height: 30px;
-        padding: 0 4px 0 9px;
-        gap: 4px;
-        border-radius: 8px;
-        background: var(--bg-surface);
+        height: 32px;
+        padding: 0 4px 0 10px;
+        gap: 5px;
+        border-radius: 9px;
+        background: rgba(14, 23, 36, 0.8);
         border: 1px solid var(--border-hairline);
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
       }
 
       .custom-input {
@@ -480,7 +630,7 @@
         border: none;
         outline: none;
         font-family: var(--font-mono);
-        font-size: 0.78rem;
+        font-size: 0.8rem;
         color: var(--text-primary);
       }
 
@@ -493,35 +643,42 @@
       }
 
       .custom-set-btn {
-        height: 22px;
+        height: 24px;
         padding: 0 8px;
-        border-radius: 5px;
-        font-size: 0.73rem;
-        font-weight: 500;
+        border-radius: 6px;
+        font-size: 0.74rem;
+        font-weight: 600;
         color: var(--text-secondary);
         background: var(--bg-control);
-        transition: background-color 0.18s ease, color 0.18s ease;
+        border: 1px solid var(--border-hairline);
+        transition: background 0.18s ease, color 0.18s ease;
       }
 
       .custom-set-btn:hover {
-        background: var(--bg-control-hover);
+        background: #253954;
         color: var(--text-primary);
       }
 
-      /* ========== POPOVERS (SOUND & STATS) ========== */
+      /* ========== 3D POPOVERS (SOUND & STATS) ========== */
       .popover {
         position: absolute;
-        top: calc(100% + 10px);
+        top: calc(100% + 12px);
         right: 0;
-        width: 286px;
-        padding: 16px;
-        border-radius: 16px;
-        background: var(--bg-surface);
-        border: 1px solid var(--border-hover);
-        box-shadow: 0 20px 48px rgba(4, 9, 17, 0.55);
+        width: 292px;
+        padding: 18px;
+        border-radius: 18px;
+        background: linear-gradient(180deg, rgba(22, 35, 54, 0.94) 0%, rgba(14, 23, 36, 0.96) 100%);
+        backdrop-filter: blur(24px) saturate(150%);
+        -webkit-backdrop-filter: blur(24px) saturate(150%);
+        border: 1px solid rgba(186, 224, 250, 0.18);
+        border-top: 1.5px solid rgba(255, 255, 255, 0.28);
+        box-shadow:
+          0 28px 64px -8px rgba(0, 0, 0, 0.85),
+          0 8px 24px rgba(0, 0, 0, 0.5),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
         display: flex;
         flex-direction: column;
-        gap: 14px;
+        gap: 15px;
         opacity: 0;
         transform: scale(0.96) translate3d(0, -6px, 0);
         transform-origin: top right;
@@ -530,7 +687,7 @@
           opacity 0.22s var(--ease-out),
           transform 0.26s var(--ease-out);
         will-change: opacity, transform;
-        z-index: 40;
+        z-index: 50;
       }
 
       .popover.open {
@@ -543,7 +700,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        font-size: 0.82rem;
+        font-size: 0.84rem;
         font-weight: 600;
         color: var(--text-primary);
       }
@@ -560,34 +717,41 @@
         gap: 8px;
       }
 
+      /* 3D Sound Option Tile */
       .sound-opt {
-        height: 36px;
+        height: 38px;
         padding: 0 10px;
         border-radius: 10px;
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        font-size: 0.8rem;
+        font-size: 0.82rem;
         font-weight: 500;
         color: var(--text-secondary);
-        background: var(--bg-control);
+        background: linear-gradient(180deg, rgba(28, 43, 66, 0.7) 0%, rgba(18, 28, 44, 0.7) 100%);
         border: 1px solid var(--border-hairline);
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
         transition:
-          background-color 0.2s var(--ease-out),
+          background 0.2s var(--ease-out),
           border-color 0.2s var(--ease-out),
           color 0.2s var(--ease-out),
-          transform 0.16s var(--ease-out);
+          transform 0.15s var(--ease-out);
       }
 
       .sound-opt:hover {
         color: var(--text-primary);
         border-color: var(--border-hover);
+        transform: translateY(-1px);
       }
 
       .sound-opt.active {
-        color: var(--ice-accent);
-        background: var(--bg-control-hover);
+        color: #ffffff;
+        background: linear-gradient(180deg, rgba(38, 62, 94, 0.95) 0%, rgba(20, 36, 58, 0.95) 100%);
         border-color: var(--ice-accent);
+        box-shadow:
+          0 3px 10px rgba(103, 198, 245, 0.28),
+          inset 0 1px 0 rgba(255, 255, 255, 0.25);
       }
 
       .sound-opt:active {
@@ -611,34 +775,37 @@
         -webkit-appearance: none;
         appearance: none;
         width: 100%;
-        height: 4px;
+        height: 5px;
         border-radius: 999px;
-        background: var(--ice-track);
+        background: rgba(155, 180, 206, 0.2);
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
         outline: none;
       }
 
       .ice-slider::-webkit-slider-thumb {
         -webkit-appearance: none;
         appearance: none;
-        width: 14px;
-        height: 14px;
+        width: 15px;
+        height: 15px;
         border-radius: 50%;
-        background: var(--text-primary);
-        border: 2px solid var(--bg-surface);
+        background: #ffffff;
+        border: 2px solid #131e2e;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
         cursor: pointer;
         transition: transform 0.15s var(--ease-out);
       }
 
       .ice-slider::-webkit-slider-thumb:hover {
-        transform: scale(1.18);
+        transform: scale(1.2);
       }
 
       .ice-slider::-moz-range-thumb {
-        width: 14px;
-        height: 14px;
+        width: 15px;
+        height: 15px;
         border-radius: 50%;
-        background: var(--text-primary);
-        border: 2px solid var(--bg-surface);
+        background: #ffffff;
+        border: 2px solid #131e2e;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
         cursor: pointer;
       }
 
@@ -652,18 +819,20 @@
         align-items: center;
         justify-content: space-between;
         gap: 10px;
-        font-size: 0.8rem;
+        font-size: 0.82rem;
         color: var(--text-secondary);
       }
 
+      /* 3D Switch */
       .switch-btn {
         position: relative;
-        width: 36px;
-        height: 20px;
+        width: 38px;
+        height: 22px;
         border-radius: 999px;
-        background: var(--bg-control);
+        background: rgba(14, 23, 36, 0.9);
         border: 1px solid var(--border-hairline);
-        transition: background-color 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+        transition: background 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
       }
 
       .switch-btn::after {
@@ -671,16 +840,18 @@
         position: absolute;
         top: 2px;
         left: 2px;
-        width: 14px;
-        height: 14px;
+        width: 16px;
+        height: 16px;
         border-radius: 50%;
         background: var(--text-secondary);
-        transition: transform 0.22s var(--ease-out), background-color 0.2s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        transition: transform 0.22s var(--ease-out), background 0.2s ease;
       }
 
       .switch-btn[aria-checked="true"] {
         background: var(--ice-accent);
         border-color: var(--ice-accent);
+        box-shadow: 0 0 8px rgba(103, 198, 245, 0.35);
       }
 
       .switch-btn[aria-checked="true"]::after {
@@ -689,23 +860,25 @@
       }
 
       .quiet-btn {
-        height: 32px;
+        height: 34px;
         padding: 0 12px;
-        border-radius: 8px;
-        font-size: 0.78rem;
+        border-radius: 9px;
+        font-size: 0.8rem;
         font-weight: 500;
         color: var(--text-secondary);
-        background: var(--bg-control);
+        background: linear-gradient(180deg, rgba(28, 43, 66, 0.7) 0%, rgba(18, 28, 44, 0.7) 100%);
         border: 1px solid var(--border-hairline);
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
         transition:
-          background-color 0.2s var(--ease-out),
+          background 0.2s var(--ease-out),
           border-color 0.2s var(--ease-out),
           color 0.2s var(--ease-out);
       }
 
       .quiet-btn:hover {
         color: var(--text-primary);
-        background: var(--bg-control-hover);
+        background: #253954;
         border-color: var(--border-hover);
       }
 
@@ -722,15 +895,16 @@
 
       .stat-cell {
         padding: 10px 12px;
-        border-radius: 10px;
-        background: var(--bg-control);
+        border-radius: 11px;
+        background: rgba(14, 23, 36, 0.75);
         border: 1px solid var(--border-hairline);
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
       }
 
       .stat-val {
         font-family: var(--font-mono);
         font-variant-numeric: tabular-nums;
-        font-size: 1.15rem;
+        font-size: 1.18rem;
         font-weight: 600;
         color: var(--text-primary);
       }
@@ -741,22 +915,28 @@
         margin-top: 2px;
       }
 
-      /* ========== SINGLE-SLOT NON-STACKING TOAST ========== */
+      /* ========== TOAST PILL ========== */
       .toast-pill {
         position: fixed;
-        bottom: 24px;
+        bottom: 26px;
         left: 50%;
-        z-index: 60;
-        padding: 9px 16px;
+        z-index: 70;
+        padding: 9px 18px;
         border-radius: 999px;
-        background: var(--bg-surface);
+        background: linear-gradient(180deg, rgba(24, 38, 60, 0.94) 0%, rgba(14, 23, 36, 0.96) 100%);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
         border: 1px solid var(--border-hover);
+        border-top: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow:
+          0 12px 28px rgba(0, 0, 0, 0.6),
+          0 2px 6px rgba(0, 0, 0, 0.4);
         color: var(--text-primary);
-        font-size: 0.8rem;
+        font-size: 0.82rem;
         font-weight: 500;
         pointer-events: none;
         opacity: 0;
-        transform: translate3d(-50%, 10px, 0);
+        transform: translate3d(-50%, 12px, 0);
         transition:
           opacity 0.24s var(--ease-out),
           transform 0.28s var(--ease-out);
@@ -778,11 +958,15 @@
     </style>
   </head>
   <body>
+    <!-- 3D Dimmed Cinematic Background -->
+    <div class="bg-layer" aria-hidden="true"></div>
+    <div class="bg-overlay" aria-hidden="true"></div>
+
     <div class="app-shell">
-      <!-- Minimal Header -->
+      <!-- Minimal Floating Header -->
       <header class="app-header">
         <div class="brand">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="9" />
             <polyline points="12 7 12 12 15.5 14" />
           </svg>
@@ -793,7 +977,7 @@
 
         <div class="header-actions">
           <button class="icon-btn" id="soundBtn" title="Ambient Sound &amp; Chime (M to mute)" aria-label="Sound Controls" aria-expanded="false">
-            <svg id="soundBtnIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <svg id="soundBtnIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
               <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
               <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
@@ -801,7 +985,7 @@
           </button>
 
           <button class="icon-btn" id="statsBtn" title="Session Stats" aria-label="Session Stats" aria-expanded="false">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 3v18h18" />
               <rect x="7" y="10" width="3" height="7" rx="1" />
               <rect x="12" y="6" width="3" height="11" rx="1" />
@@ -810,12 +994,12 @@
           </button>
 
           <button class="icon-btn" id="fullscreenBtn" title="Fullscreen (F)" aria-label="Toggle Fullscreen">
-            <svg id="fullscreenIcon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <svg id="fullscreenIcon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
             </svg>
           </button>
 
-          <!-- Sound Popover -->
+          <!-- 3D Sound Popover -->
           <div class="popover" id="soundPopover" role="dialog" aria-label="Sound Settings">
             <div class="pop-title">
               <span>Ambient Sound</span>
@@ -857,9 +1041,9 @@
             <div class="vol-row">
               <div class="vol-head">
                 <span>Volume</span>
-                <span class="pop-sub" id="volLabel">75%</span>
+                <span class="pop-sub" id="volLabel">80%</span>
               </div>
-              <input type="range" class="ice-slider" id="volumeSlider" min="0" max="100" value="75" aria-label="Master Volume" />
+              <input type="range" class="ice-slider" id="volumeSlider" min="0" max="100" value="80" aria-label="Master Volume" />
             </div>
 
             <div class="pop-divider"></div>
@@ -869,10 +1053,10 @@
               <button type="button" class="switch-btn" id="chimeSwitch" role="switch" aria-checked="true" aria-label="Toggle Completion Chime"></button>
             </div>
 
-            <button type="button" class="quiet-btn" id="testChimeBtn">Test Chime</button>
+            <button type="button" class="quiet-btn" id="testChimeBtn">🔔 Test Chime Sound</button>
           </div>
 
-          <!-- Stats Popover -->
+          <!-- 3D Stats Popover -->
           <div class="popover" id="statsPopover" role="dialog" aria-label="Focus Statistics">
             <div class="pop-title">
               <span>Focus Stats</span>
@@ -903,7 +1087,7 @@
         </div>
       </header>
 
-      <!-- Centered Focus Stage -->
+      <!-- Centered 3D Focus Stage -->
       <main class="stage">
         <div class="mode-switch" id="modeSwitch" role="tablist" aria-label="Session Mode">
           <div class="mode-pill" aria-hidden="true"></div>
@@ -913,12 +1097,17 @@
         </div>
 
         <div class="chronometer">
+          <!-- 3D Beveled Dish -->
+          <div class="chronometer-dish" aria-hidden="true"></div>
+
+          <!-- Ring SVG -->
           <svg class="chrono-svg" viewBox="0 0 360 360" aria-hidden="true">
             <circle class="chrono-track" cx="180" cy="180" r="158" />
             <circle class="chrono-arc" id="chronoArc" cx="180" cy="180" r="158" />
             <circle class="chrono-tip" id="chronoTip" cx="180" cy="22" r="4.5" />
           </svg>
 
+          <!-- Inner Dial Content -->
           <div class="chrono-inner">
             <div class="chrono-digits" id="timerDisplay">25:00</div>
             <input
@@ -937,7 +1126,7 @@
         <div class="controls-block">
           <div class="controls-row">
             <button type="button" class="btn-secondary" id="resetBtn" title="Reset (R)" aria-label="Reset Timer">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
                 <path d="M3 3v5h5" />
               </svg>
@@ -951,7 +1140,7 @@
             </button>
 
             <button type="button" class="btn-secondary" id="skipBtn" title="Skip Phase (S)" aria-label="Skip Phase">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
                 <polygon points="5 4 15 12 5 20 5 4" />
                 <line x1="19" y1="5" x2="19" y2="19" />
               </svg>
@@ -980,7 +1169,7 @@
       </main>
     </div>
 
-    <!-- Single-slot Toast -->
+    <!-- Single-slot Toast Pill -->
     <div class="toast-pill" id="toast" role="status" aria-live="polite"></div>
 
     <script>
@@ -1026,177 +1215,117 @@
           return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
         }
 
-        /* ========== GUARANTEED-AUDIBLE WEB AUDIO ENGINE ========== */
+        /* ========== 100% RELIABLE SYNTHETIC WEB AUDIO ENGINE ========== */
         class SoundEngine {
           constructor() {
             this.ctx = null;
-            this.compressor = null;
             this.masterGain = null;
             this.mode = "off"; // "off" | "rain" | "wind" | "noise"
-            this.volume = 0.75;
+            this.volume = 0.8;
             this.muted = false;
             this.chimeEnabled = true;
-            this.buffers = {};
+            this.noiseBuffer = null;
             this.activeNodes = null;
           }
 
-          async ensureContext() {
+          // Direct sync initialization on any user gesture
+          getContext() {
             if (!this.ctx) {
               const AudioCtx = window.AudioContext || window.webkitAudioContext;
               if (!AudioCtx) return null;
               this.ctx = new AudioCtx();
-
-              this.compressor = this.ctx.createDynamicsCompressor();
-              this.compressor.threshold.setValueAtTime(-16, this.ctx.currentTime);
-              this.compressor.knee.setValueAtTime(18, this.ctx.currentTime);
-              this.compressor.ratio.setValueAtTime(4, this.ctx.currentTime);
-              this.compressor.attack.setValueAtTime(0.005, this.ctx.currentTime);
-              this.compressor.release.setValueAtTime(0.15, this.ctx.currentTime);
-
               this.masterGain = this.ctx.createGain();
-              this.masterGain.gain.setValueAtTime(
-                this.muted ? 0 : this.volume,
-                this.ctx.currentTime
-              );
-
-              this.compressor.connect(this.masterGain);
+              this.masterGain.gain.setValueAtTime(this.muted ? 0 : this.volume, this.ctx.currentTime);
               this.masterGain.connect(this.ctx.destination);
-              this._initBuffers();
             }
-
             if (this.ctx.state === "suspended") {
-              try {
-                await this.ctx.resume();
-              } catch {}
+              this.ctx.resume().catch(() => {});
             }
             return this.ctx;
           }
 
-          _normalizeBuffer(data) {
-            let maxAbs = 0;
-            for (let i = 0; i < data.length; i++) {
-              const a = Math.abs(data[i]);
-              if (a > maxAbs) maxAbs = a;
+          getNoiseBuffer(ctx) {
+            if (!this.noiseBuffer) {
+              // 3-second looping white noise buffer
+              const len = ctx.sampleRate * 3;
+              const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+              const data = buf.getChannelData(0);
+              for (let i = 0; i < len; i++) {
+                data[i] = Math.random() * 2 - 1;
+              }
+              this.noiseBuffer = buf;
             }
-            const scale = maxAbs > 0 ? 0.9 / maxAbs : 1;
-            for (let i = 0; i < data.length; i++) {
-              data[i] *= scale;
-            }
-            // Seamless 2048-sample wrap crossfade to avoid loop click
-            const fade = Math.min(2048, Math.floor(data.length / 8));
-            for (let i = 0; i < fade; i++) {
-              const w = i / fade;
-              data[i] = data[i] * w + data[data.length - fade + i] * (1 - w);
-            }
+            return this.noiseBuffer;
           }
 
-          _initBuffers() {
-            const sr = this.ctx.sampleRate;
-            const len = sr * 4;
-
-            // Normalized Brown Noise (Wind)
-            const brownBuf = this.ctx.createBuffer(1, len, sr);
-            const brownOut = brownBuf.getChannelData(0);
-            let lastOut = 0;
-            for (let i = 0; i < len; i++) {
-              const white = Math.random() * 2 - 1;
-              lastOut = (lastOut + 0.03 * white) / 1.03;
-              brownOut[i] = lastOut;
-            }
-            this._normalizeBuffer(brownOut);
-            this.buffers.brown = brownBuf;
-
-            // Normalized Pink Noise (Rain / Soft Noise)
-            const pinkBuf = this.ctx.createBuffer(1, len, sr);
-            const pinkOut = pinkBuf.getChannelData(0);
-            let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
-            for (let i = 0; i < len; i++) {
-              const white = Math.random() * 2 - 1;
-              b0 = 0.99886 * b0 + white * 0.0555179;
-              b1 = 0.99332 * b1 + white * 0.0750759;
-              b2 = 0.96900 * b2 + white * 0.1538520;
-              b3 = 0.86650 * b3 + white * 0.3104856;
-              b4 = 0.55000 * b4 + white * 0.5329522;
-              b5 = -0.7616 * b5 - white * 0.0168980;
-              pinkOut[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
-              b6 = white * 0.115926;
-            }
-            this._normalizeBuffer(pinkOut);
-            this.buffers.pink = pinkBuf;
-          }
-
-          _stopActiveNodes(immediate = false) {
-            if (!this.activeNodes || !this.ctx) return;
+          stopAmbient() {
+            if (!this.activeNodes) return;
             const nodes = this.activeNodes;
             this.activeNodes = null;
-            const now = this.ctx.currentTime;
             try {
-              nodes.gain.gain.setTargetAtTime(0.0001, now, 0.04);
+              if (nodes.gain && this.ctx) {
+                nodes.gain.gain.setValueAtTime(nodes.gain.gain.value, this.ctx.currentTime);
+                nodes.gain.gain.linearRampToValueAtTime(0.001, this.ctx.currentTime + 0.15);
+              }
             } catch {}
-            const delay = immediate ? 0 : 180;
             setTimeout(() => {
-              nodes.stoppables.forEach((s) => {
-                try {
-                  s.stop();
-                } catch {}
+              nodes.stoppables?.forEach((s) => {
+                try { s.stop(); } catch {}
               });
-              nodes.cleanup.forEach((n) => {
-                try {
-                  n.disconnect();
-                } catch {}
+              nodes.cleanup?.forEach((n) => {
+                try { n.disconnect(); } catch {}
               });
-            }, delay);
+            }, 180);
           }
 
-          async setMode(nextMode) {
+          setMode(nextMode) {
             this.mode = nextMode;
             if (nextMode === "off") {
-              this._stopActiveNodes();
+              this.stopAmbient();
               return;
             }
-            const ctx = await this.ensureContext();
+            const ctx = this.getContext();
             if (!ctx) return;
+            this.stopAmbient();
 
-            this._stopActiveNodes(true);
+            const noiseBuf = this.getNoiseBuffer(ctx);
+            const src = ctx.createBufferSource();
+            src.buffer = noiseBuf;
+            src.loop = true;
+
             const now = ctx.currentTime;
             const gain = ctx.createGain();
-            gain.gain.setValueAtTime(0.0001, now);
-            gain.connect(this.compressor);
+            gain.gain.setValueAtTime(0.001, now);
+            gain.connect(this.masterGain);
 
             if (nextMode === "rain") {
-              const src = ctx.createBufferSource();
-              src.buffer = this.buffers.pink;
-              src.loop = true;
+              const lp = ctx.createBiquadFilter();
+              lp.type = "lowpass";
+              lp.frequency.setValueAtTime(1400, now);
 
               const bp = ctx.createBiquadFilter();
               bp.type = "bandpass";
-              bp.frequency.setValueAtTime(1100, now);
-              bp.Q.setValueAtTime(0.5, now);
+              bp.frequency.setValueAtTime(2600, now);
+              bp.Q.setValueAtTime(0.8, now);
 
-              const lp = ctx.createBiquadFilter();
-              lp.type = "lowpass";
-              lp.frequency.setValueAtTime(4200, now);
-
-              src.connect(bp);
-              bp.connect(lp);
-              lp.connect(gain);
+              src.connect(lp);
+              lp.connect(bp);
+              bp.connect(gain);
               src.start(now);
-              gain.gain.setTargetAtTime(0.55, now, 0.12);
-              this.activeNodes = { gain, stoppables: [src], cleanup: [src, bp, lp, gain] };
+              gain.gain.linearRampToValueAtTime(0.55, now + 0.2);
+              this.activeNodes = { gain, stoppables: [src], cleanup: [src, lp, bp, gain] };
             } else if (nextMode === "wind") {
-              const src = ctx.createBufferSource();
-              src.buffer = this.buffers.brown;
-              src.loop = true;
-
               const lp = ctx.createBiquadFilter();
               lp.type = "lowpass";
               lp.frequency.setValueAtTime(360, now);
-              lp.Q.setValueAtTime(1.4, now);
+              lp.Q.setValueAtTime(1.8, now);
 
               const lfo = ctx.createOscillator();
-              lfo.frequency.setValueAtTime(0.12, now);
+              lfo.type = "sine";
+              lfo.frequency.setValueAtTime(0.14, now);
               const lfoGain = ctx.createGain();
-              lfoGain.gain.setValueAtTime(120, now);
+              lfoGain.gain.setValueAtTime(140, now);
+
               lfo.connect(lfoGain);
               lfoGain.connect(lp.frequency);
 
@@ -1204,26 +1333,18 @@
               lp.connect(gain);
               src.start(now);
               lfo.start(now);
-              gain.gain.setTargetAtTime(0.65, now, 0.14);
-              this.activeNodes = {
-                gain,
-                stoppables: [src, lfo],
-                cleanup: [src, lp, lfo, lfoGain, gain],
-              };
+              gain.gain.linearRampToValueAtTime(0.7, now + 0.2);
+              this.activeNodes = { gain, stoppables: [src, lfo], cleanup: [src, lp, lfo, lfoGain, gain] };
             } else if (nextMode === "noise") {
-              const src = ctx.createBufferSource();
-              src.buffer = this.buffers.pink;
-              src.loop = true;
-
               const lp = ctx.createBiquadFilter();
               lp.type = "lowpass";
-              lp.frequency.setValueAtTime(750, now);
-              lp.Q.setValueAtTime(0.7, now);
+              lp.frequency.setValueAtTime(700, now);
+              lp.Q.setValueAtTime(0.6, now);
 
               src.connect(lp);
               lp.connect(gain);
               src.start(now);
-              gain.gain.setTargetAtTime(0.45, now, 0.12);
+              gain.gain.linearRampToValueAtTime(0.48, now + 0.2);
               this.activeNodes = { gain, stoppables: [src], cleanup: [src, lp, gain] };
             }
           }
@@ -1232,7 +1353,7 @@
             this.volume = Math.max(0, Math.min(1, norm));
             if (this.ctx && this.masterGain) {
               const target = this.muted ? 0 : this.volume;
-              this.masterGain.gain.setTargetAtTime(target, this.ctx.currentTime, 0.04);
+              this.masterGain.gain.setValueAtTime(target, this.ctx.currentTime);
             }
           }
 
@@ -1240,47 +1361,74 @@
             this.muted = !this.muted;
             if (this.ctx && this.masterGain) {
               const target = this.muted ? 0 : this.volume;
-              this.masterGain.gain.setTargetAtTime(target, this.ctx.currentTime, 0.04);
+              this.masterGain.gain.setValueAtTime(target, this.ctx.currentTime);
             }
             return this.muted;
           }
 
-          async playChime(force = false) {
-            if (!force && (!this.chimeEnabled || this.muted)) return;
-            const ctx = await this.ensureContext();
+          // Subtle tactile mechanical click on button press
+          playClick() {
+            if (this.muted) return;
+            const ctx = this.getContext();
             if (!ctx) return;
-
-            const now = ctx.currentTime;
-            const notes = [
-              { freq: 523.25, t: 0.01, amp: 0.45 }, // C5
-              { freq: 1046.5, t: 0.01, amp: 0.22 }, // C6
-              { freq: 1567.98, t: 0.01, amp: 0.10 }, // G6
-              { freq: 783.99, t: 0.29, amp: 0.42 }, // G5
-              { freq: 1174.66, t: 0.29, amp: 0.20 }, // D6
-            ];
-
-            notes.forEach((n) => {
-              const start = now + n.t;
+            try {
+              const now = ctx.currentTime;
               const osc = ctx.createOscillator();
               const g = ctx.createGain();
               osc.type = "sine";
-              osc.frequency.setValueAtTime(n.freq, start);
+              osc.frequency.setValueAtTime(1200, now);
+              osc.frequency.exponentialRampToValueAtTime(280, now + 0.015);
 
-              g.gain.setValueAtTime(0.0001, start);
-              g.gain.linearRampToValueAtTime(n.amp, start + 0.01);
-              g.gain.exponentialRampToValueAtTime(0.0001, start + 2.4);
+              g.gain.setValueAtTime(0.06 * this.volume, now);
+              g.gain.linearRampToValueAtTime(0.0001, now + 0.015);
 
               osc.connect(g);
-              g.connect(this.compressor);
+              g.connect(this.masterGain);
+              osc.start(now);
+              osc.stop(now + 0.018);
+            } catch {}
+          }
+
+          // Crystal-clear Harmonic Bell Chime
+          playChime(force = false) {
+            if (!force && (!this.chimeEnabled || this.muted)) return;
+            const ctx = this.getContext();
+            if (!ctx) return;
+
+            const t0 = ctx.currentTime + 0.04; // 40ms safety margin ensures always future
+            const chords = [
+              // Bell Strike 1 (C5 + G5 + C6)
+              { freq: 523.25, time: 0, dur: 2.4, amp: 0.5 },
+              { freq: 783.99, time: 0, dur: 2.2, amp: 0.35 },
+              { freq: 1046.5, time: 0, dur: 2.0, amp: 0.25 },
+              // Bell Strike 2 (E5 + B5 + D6)
+              { freq: 659.25, time: 0.28, dur: 2.4, amp: 0.45 },
+              { freq: 987.77, time: 0.28, dur: 2.2, amp: 0.3 },
+              { freq: 1174.66, time: 0.28, dur: 2.0, amp: 0.2 },
+            ];
+
+            chords.forEach((c) => {
+              const start = t0 + c.time;
+              const osc = ctx.createOscillator();
+              const g = ctx.createGain();
+              osc.type = "sine";
+              osc.frequency.setValueAtTime(c.freq, start);
+
+              g.gain.setValueAtTime(0.001, start);
+              g.gain.linearRampToValueAtTime(c.amp, start + 0.025);
+              g.gain.exponentialRampToValueAtTime(0.0001, start + c.dur);
+
+              osc.connect(g);
+              g.connect(this.masterGain);
               osc.start(start);
-              osc.stop(start + 2.45);
+              osc.stop(start + c.dur + 0.05);
             });
           }
         }
 
         const sound = new SoundEngine();
 
-        /* ========== STATE & STORAGE (BACKWARD COMPATIBLE) ========== */
+        /* ========== STATE & STORAGE ========== */
         const state = {
           mode: "focus",
           running: false,
@@ -1327,7 +1475,8 @@
 
             const savedSound = safeJsonParse(localStorage.getItem("pomodoro_sound"), null);
             if (savedSound && typeof savedSound === "object") {
-              sound.volume = Math.max(0, Math.min(1, Number(savedSound.volume ?? 0.75)));
+              const v = Number(savedSound.volume);
+              sound.volume = Number.isFinite(v) && v > 0.05 ? Math.min(1, v) : 0.8;
               sound.chimeEnabled = savedSound.chime !== undefined ? Boolean(savedSound.chime) : true;
             }
           } catch {}
@@ -1353,7 +1502,7 @@
           } catch {}
         }
 
-        /* ========== SINGLE-SLOT NON-STACKING TOAST ========== */
+        /* ========== SINGLE-SLOT TOAST ========== */
         let toastTimer = null;
         function showToast(msg) {
           const el = $("toast");
@@ -1363,10 +1512,10 @@
           toastTimer = setTimeout(() => {
             el.classList.remove("visible");
             toastTimer = null;
-          }, 1800);
+          }, 2000);
         }
 
-        /* ========== WAKE LOCK ========== */
+        /* ========== WAKE LOCK (KEEP SECOND MONITOR AWAKE) ========== */
         let wakeLockSentinel = null;
         async function syncWakeLock() {
           if (!("wakeLock" in navigator)) return;
@@ -1387,7 +1536,7 @@
           }
         }
 
-        /* ========== ZERO-DRIFT WORKER + 90-120 FPS RING SWEEP ========== */
+        /* ========== SUB-SECOND 90-120 FPS RING SWEEP ========== */
         let worker = null;
         let fallbackInterval = null;
         let lastDisplayedSec = -1;
@@ -1493,6 +1642,7 @@
         }
 
         function setMode(mode) {
+          sound.playClick();
           stopTimer();
           state.mode = mode;
           const idx = mode === "focus" ? 0 : mode === "short" ? 1 : 2;
@@ -1521,7 +1671,8 @@
         }
 
         function startOrPause() {
-          sound.ensureContext();
+          sound.playClick();
+          sound.getContext();
           if (state.running) {
             state.remainingMs = Math.max(0, state.endTimeMs - Date.now());
             stopTimer();
@@ -1545,6 +1696,7 @@
         }
 
         function resetTimer() {
+          sound.playClick();
           stopTimer();
           state.remainingMs = state.totalMs;
           updateTimerUI();
@@ -1573,7 +1725,7 @@
 
             const next = state.focusCycles % 4 === 0 ? "long" : "short";
             setMode(next);
-            showToast(`Focus complete (+${mins}m)`);
+            showToast(`Focus session complete (+${mins}m)`);
           } else {
             state.totalBreakMinutes += mins;
             state.sessionHistory.push({
@@ -1584,11 +1736,12 @@
             saveStats();
             renderStats();
             setMode("focus");
-            showToast("Break finished");
+            showToast("Break finished! Ready to focus.");
           }
         }
 
         function skipPhase() {
+          sound.playClick();
           stopTimer();
           if (state.mode === "focus") {
             const next = (state.focusCycles + 1) % 4 === 0 ? "long" : "short";
@@ -1644,6 +1797,7 @@
         }
 
         function togglePopover(popId, btnId) {
+          sound.playClick();
           const pop = $(popId);
           const isOpen = pop.classList.contains("open");
           closePopovers();
@@ -1656,6 +1810,7 @@
         }
 
         function toggleFullscreen() {
+          sound.playClick();
           if (!document.fullscreenElement) {
             document.documentElement.requestFullscreen?.().catch(() => {});
           } else {
@@ -1692,6 +1847,7 @@
 
           document.querySelectorAll(".preset-btn[data-min]").forEach((btn) => {
             btn.addEventListener("click", () => {
+              sound.playClick();
               if (state.mode !== "focus") setMode("focus");
               setDuration(btn.dataset.min);
             });
@@ -1699,6 +1855,7 @@
 
           $("customForm").addEventListener("submit", (e) => {
             e.preventDefault();
+            sound.playClick();
             const raw = $("customInput").value;
             if (!raw) return;
             const mins = clampInt(raw, 1, 180, 25);
@@ -1721,7 +1878,7 @@
             }
           });
 
-          // Popovers & Header
+          // Popovers
           $("soundBtn").addEventListener("click", (e) => {
             e.stopPropagation();
             togglePopover("soundPopover", "soundBtn");
@@ -1742,44 +1899,51 @@
             }
           });
 
-          // Sound Popover Controls
+          // Sound Options
           document.querySelectorAll(".sound-opt").forEach((btn) => {
-            btn.addEventListener("click", async () => {
+            btn.addEventListener("click", () => {
+              sound.playClick();
               if (sound.muted) sound.toggleMute();
-              await sound.setMode(btn.dataset.sound);
+              sound.setMode(btn.dataset.sound);
               updateSoundUI();
+              const label = { off: "Sound off", rain: "🌧️ Rain sound on", wind: "🍃 Wind sound on", noise: "🌊 Soft noise on" };
+              showToast(label[btn.dataset.sound] || "Sound updated");
             });
           });
 
-          $("volumeSlider").addEventListener("input", async (e) => {
+          $("volumeSlider").addEventListener("input", (e) => {
             const v = Number(e.target.value) / 100;
             sound.setVolume(v);
             if (sound.muted && v > 0) sound.toggleMute();
             if (sound.mode === "off" && v > 0) {
-              await sound.setMode("rain");
+              sound.setMode("rain");
             }
             saveSoundPrefs();
             updateSoundUI();
           });
 
           $("chimeSwitch").addEventListener("click", () => {
+            sound.playClick();
             sound.chimeEnabled = !sound.chimeEnabled;
             saveSoundPrefs();
             updateSoundUI();
+            showToast(sound.chimeEnabled ? "Chime enabled" : "Chime disabled");
           });
 
-          $("testChimeBtn").addEventListener("click", async () => {
+          $("testChimeBtn").addEventListener("click", () => {
             if (sound.muted) {
               sound.toggleMute();
               updateSoundUI();
             }
-            await sound.playChime(true);
+            sound.playChime(true);
+            showToast("🔔 Chime playing...");
           });
 
           // Stats Reset (2-step safe confirm)
           let resetArmed = false;
           let resetArmTimer = null;
           $("resetStatsBtn").addEventListener("click", () => {
+            sound.playClick();
             const btn = $("resetStatsBtn");
             if (!resetArmed) {
               resetArmed = true;
@@ -1833,6 +1997,7 @@
               e.preventDefault();
               sound.toggleMute();
               updateSoundUI();
+              showToast(sound.muted ? "Sound muted" : "Sound unmuted");
             } else if (e.key === "f" || e.key === "F") {
               e.preventDefault();
               toggleFullscreen();
