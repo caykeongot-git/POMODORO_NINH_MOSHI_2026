@@ -608,48 +608,113 @@
         display: inline-flex;
         align-items: center;
         height: 32px;
-        padding: 0 4px 0 10px;
-        gap: 5px;
+        padding: 0 4px;
+        gap: 4px;
         border-radius: 9px;
-        background: rgba(14, 23, 36, 0.8);
+        background: linear-gradient(180deg, rgba(26, 40, 62, 0.8) 0%, rgba(16, 26, 42, 0.85) 100%);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         border: 1px solid var(--border-hairline);
-        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+        border-top: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow:
+          0 2px 6px rgba(0, 0, 0, 0.28),
+          inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      }
+
+      .stepper-btn {
+        width: 22px;
+        height: 24px;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-secondary);
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        transition:
+          background 0.18s ease,
+          color 0.18s ease,
+          transform 0.12s ease;
+      }
+
+      .stepper-btn:hover {
+        background: rgba(103, 198, 245, 0.25);
+        color: #ffffff;
+      }
+
+      .stepper-btn:active {
+        transform: scale(0.9);
+      }
+
+      .custom-input-wrap {
+        display: inline-flex;
+        align-items: center;
+        gap: 1px;
+        padding: 0 2px;
       }
 
       .custom-input {
-        width: 38px;
+        width: 46px;
         background: transparent;
         border: none;
         outline: none;
         font-family: var(--font-mono);
-        font-size: 0.8rem;
+        font-size: 0.82rem;
+        font-weight: 600;
         color: #ffffff;
+        text-align: center;
       }
 
       .custom-input::placeholder {
         color: var(--text-muted);
+        font-size: 0.78rem;
+        font-weight: 500;
       }
 
+      /* Completely remove ugly native spin arrows across all browsers */
+      .custom-input::-webkit-outer-spin-button,
       .custom-input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
+        -webkit-appearance: none !important;
+        margin: 0 !important;
+      }
+
+      .custom-input[type="number"] {
+        -moz-appearance: textfield !important;
+        appearance: textfield !important;
+      }
+
+      .custom-unit {
+        font-family: var(--font-mono);
+        font-size: 0.74rem;
+        color: var(--text-muted);
+        user-select: none;
+        margin-left: -2px;
       }
 
       .custom-set-btn {
         height: 24px;
-        padding: 0 8px;
+        padding: 0 10px;
         border-radius: 6px;
-        font-size: 0.74rem;
+        font-size: 0.75rem;
         font-weight: 600;
         color: #ffffff;
-        background: #20334c;
-        border: 1px solid var(--border-hairline);
-        transition: background 0.18s ease;
+        background: linear-gradient(180deg, #2b4566 0%, #1e324c 100%);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        transition:
+          background 0.18s ease,
+          border-color 0.18s ease,
+          transform 0.12s ease;
       }
 
       .custom-set-btn:hover {
-        background: #2b4566;
+        background: linear-gradient(180deg, #375782 0%, #264062 100%);
+        border-color: var(--ice-accent);
+      }
+
+      .custom-set-btn:active {
+        transform: scale(0.94);
       }
 
       /* ========== 3D GLASS POPOVERS (SOUND & STATS) ========== */
@@ -1164,15 +1229,24 @@
             <button type="button" class="preset-btn" data-min="50">50m</button>
             <button type="button" class="preset-btn" data-min="60">60m</button>
             <form class="custom-form" id="customForm">
-              <input
-                type="number"
-                class="custom-input"
-                id="customInput"
-                min="1"
-                max="180"
-                placeholder="Min"
-                aria-label="Custom minutes"
-              />
+              <button type="button" class="stepper-btn" id="customMinusBtn" title="Decrease 5m" aria-label="Decrease 5 minutes">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+              <div class="custom-input-wrap">
+                <input
+                  type="number"
+                  class="custom-input"
+                  id="customInput"
+                  min="1"
+                  max="180"
+                  placeholder="Min"
+                  aria-label="Custom minutes"
+                />
+                <span class="custom-unit" aria-hidden="true">m</span>
+              </div>
+              <button type="button" class="stepper-btn" id="customPlusBtn" title="Increase 5m" aria-label="Increase 5 minutes">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
               <button type="submit" class="custom-set-btn">Set</button>
             </form>
           </div>
@@ -1905,7 +1979,7 @@
           document.addEventListener("pointerdown", (e) => {
             if (
               e.target.closest(
-                "button, .preset-btn, .mode-btn, .sound-opt, .switch-btn, .icon-btn, .custom-set-btn"
+                "button, .preset-btn, .mode-btn, .sound-opt, .switch-btn, .icon-btn, .custom-set-btn, .stepper-btn"
               )
             ) {
               sound.playClick();
@@ -1927,13 +2001,31 @@
             });
           });
 
+          $("customMinusBtn").addEventListener("click", () => {
+            const cur = Number($("customInput").value) || Math.round(state.totalMs / 60000);
+            const next = Math.max(1, cur - 5);
+            $("customInput").value = next;
+            if (state.mode !== "focus") setMode("focus");
+            setDuration(next);
+            showToast(`Timer set to ${next}m`);
+          });
+
+          $("customPlusBtn").addEventListener("click", () => {
+            const cur = Number($("customInput").value) || Math.round(state.totalMs / 60000);
+            const next = Math.min(180, cur + 5);
+            $("customInput").value = next;
+            if (state.mode !== "focus") setMode("focus");
+            setDuration(next);
+            showToast(`Timer set to ${next}m`);
+          });
+
           $("customForm").addEventListener("submit", (e) => {
             e.preventDefault();
             const raw = $("customInput").value;
             if (!raw) return;
             const mins = clampInt(raw, 1, 180, 25);
+            if (state.mode !== "focus") setMode("focus");
             setDuration(mins);
-            $("customInput").value = "";
             showToast(`Timer set to ${mins}m`);
           });
 
